@@ -55,44 +55,144 @@ Integrated real-time DSP stages transform standard neural speech into iconic gam
 
 ---
 
-## 🚀 Getting Started
+## ⚡ Quick Start: Copy & Paste Code
 
-### Prebuilt Executables
-Download the latest prebuilt binaries from [GitHub Releases](https://github.com/tahirshaikh744-design/soundforge-studio/releases):
-* **Standalone Portable:** `SoundForge-Studio-Portable-1.0.0.exe` (Zero installation, runs anywhere).
-* **Windows Installer:** `SoundForge-Studio-Setup-1.0.0.exe` (Full NSIS setup with Start Menu and Desktop shortcuts).
+Get up and running immediately with these copy-paste terminal commands:
+
+### 🔹 Option 1: PowerShell (Clone, Install & Run in 1 Command)
+```powershell
+git clone https://github.com/tahirshaikh744-design/soundforge-studio.git; cd soundforge-studio; git lfs pull; npm install; npm start
+```
+
+### 🔹 Option 2: PowerShell (Clone, Test & Compile Both .EXE Files)
+```powershell
+git clone https://github.com/tahirshaikh744-design/soundforge-studio.git; cd soundforge-studio; git lfs pull; npm install; .\build.ps1
+```
+
+### 🔹 Option 3: Command Prompt (CMD Block)
+```cmd
+git clone https://github.com/tahirshaikh744-design/soundforge-studio.git
+cd soundforge-studio
+git lfs pull
+npm install
+build.bat
+```
 
 ---
 
-### Running from Source
+## 📋 What is Necessary Before Building
 
-#### Prerequisites
-* [Node.js](https://nodejs.org/) (v18.0.0 or higher recommended)
-* [Git LFS](https://git-lfs.com/) (Required to pull the bundled neural `.onnx` models)
+Before building SoundForge Studio executables from source, ensure your environment meets these requirements:
 
+### 1. System Requirements
+* **Operating System:** Windows 10 or Windows 11 (64-bit).
+* **RAM:** Minimum 4 GB (8 GB recommended for Electron packaging).
+* **Disk Space:** Minimum 3 GB free disk space (to accommodate Node modules, neural models, and temporary packaging cache).
+
+### 2. Required Software & Tools
+* **Node.js (v18.0.0 or higher):**
+  * Download the LTS version from [nodejs.org](https://nodejs.org/).
+  * Verify in your terminal:
+    ```bash
+    node -v
+    npm -v
+    ```
+* **Git & Git LFS (Large File Storage):**
+  * **CRITICAL:** Git LFS is **strictly required** to pull the pre-trained neural voice models (`Ryan.onnx`, `Joe.onnx`, `Aria.onnx`, `Alan.onnx`).
+  * *Why?* Without Git LFS, git will only clone ~130-byte text pointer files instead of the actual 120 MB neural models, causing speech generation to fail!
+  * Verify Git LFS is installed:
+    ```bash
+    git lfs --version
+    ```
+  * If missing, download it from [git-lfs.com](https://git-lfs.com/) or install via winget:
+    ```powershell
+    winget install GitHub.GitLFS
+    git lfs install
+    ```
+
+### 3. PowerShell Script Execution Permissions (If using `build.ps1`)
+Windows restricts script execution by default. To allow `build.ps1` to execute in your current terminal session:
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process
+```
+
+### 4. Pre-Build Model Health Check (Recommended)
+Verify that your neural models are downloaded as binary files and not text pointers:
+```powershell
+Get-ChildItem engine/voices/*.onnx | Select-Object Name, Length
+```
+*(Every `.onnx` model should be > 15,000,000 bytes. If any model is < 1 KB, run `git lfs pull`).*
+
+---
+
+## 🛠️ Complete Step-by-Step Build Guide
+
+Follow these steps to compile both the **Standalone Portable** (`.exe`) and **NSIS Windows Setup Installer** (`.exe`):
+
+### Step 1: Clone the Repository & Fetch Git LFS Models
 ```bash
-# 1. Clone repository
 git clone https://github.com/tahirshaikh744-design/soundforge-studio.git
 cd soundforge-studio
-
-# 2. Pull Git LFS model binaries
 git lfs pull
+```
 
-# 3. Install dependencies
+### Step 2: Install Project Dependencies
+Install Electron and electron-builder:
+```bash
 npm install
+```
 
-# 4. Run the quality assurance test suite
+### Step 3: Run the Audio Quality Assurance Test Suite
+Before packaging, run the automated test suite to verify physical acoustics, ITU-R BS.1770-4 loudness compliance, and character DSP graphs:
+```bash
 npm test
+```
+*You should see `=== ALL TESTS PASSED: SOUNDFORGE STUDIO IS ENTERPRISE & MOBILE GAME READY ===`.*
 
-# 5. Launch the application
-npm start
+### Step 4: Compile Production Binaries
+Choose your preferred build method:
+
+#### Method A: 1-Click Batch Script (Recommended for CMD)
+Double-click [`build.bat`](build.bat) in File Explorer or run in terminal:
+```cmd
+build.bat
+```
+
+#### Method B: PowerShell Script (With Custom Flags)
+```powershell
+.\build.ps1
+```
+*Optional parameters:*
+* `.\build.ps1 -PortableOnly` — Builds only the standalone portable .exe.
+* `.\build.ps1 -SetupOnly` — Builds only the NSIS setup installer .exe.
+* `.\build.ps1 -SkipTests` — Skips the audio verification test suite for faster builds.
+
+#### Method C: Standard npm Script
+```bash
+# Build BOTH Portable and Setup installers
+npm run build
+
+# Or build individually:
+npm run build:portable
+npm run build:setup
+```
+
+### Step 5: Locate Your Output Executables
+All compiled binaries will be placed in the `dist/` directory:
+* 📁 `dist/SoundForge-Studio-Portable-1.0.0.exe` (~383 MB — Zero installation, runs immediately on any Windows PC).
+* 📁 `dist/SoundForge-Studio-Setup-1.0.0.exe` (~383 MB — Full NSIS installer with Desktop and Start Menu shortcuts).
+
+### Step 6: Clean Up Build Artifacts (Optional)
+To delete intermediate build caches and free up ~1.7 GB of packaging space:
+```bash
+npm run clean
 ```
 
 ---
 
 ## 🧪 Audio Integrity Test Suite
 
-SoundForge Studio includes an automated quality assurance test suite:
+SoundForge Studio includes an automated test suite verifying studio audio standards:
 
 ```bash
 npm test
@@ -101,47 +201,24 @@ npm test
 This verifies:
 1. **Catalog Integrity:** Validates all 2,500 physical SFX items across all 25 categories.
 2. **ITU-R BS.1770-4 Compliance:** Verifies integrated LUFS normalization accuracy.
-3. **True Peak Oversampling:** Validates 4x polyphase inter-sample peak detection.
+3. **True Peak Oversampling:** Validates 4x polyphase inter-sample peak detection (-1.0 dBTP ceiling).
 4. **WAV Serialization & TPDF Dither:** Asserts 16-bit PCM bitstream encoding.
 5. **Physical SFX Determinism:** Verifies bit-for-bit identical output on re-render.
 6. **Dual Sample Rates:** Asserts bandlimited sinc resampling at 44.1 kHz and 48.0 kHz.
-7. **Click-Free Micro-Fades:** Validates zero boundary sample values.
+7. **Click-Free Micro-Fades:** Validates zero boundary sample values (3ms attack / 6ms decay).
 8. **Game Voice DSP Transforms:** Tests Arena, Tactical Radio, Cyborg, and Demonic Boss audio graphs.
 9. **Category Coverage:** Synthesizes sounds across all 25 categories.
 
 ---
 
-## 📦 Building Production Binaries (Both Setup & Portable)
+## ❓ Troubleshooting Pre-Build & Build Issues
 
-SoundForge Studio includes automated build scripts to build **both** the Portable and Setup installer executables with a single command:
-
-### Option A: 1-Click Windows Batch Script
-Double-click `build.bat` or run in Command Prompt:
-```cmd
-build.bat
-```
-
-### Option B: PowerShell Build Script
-Run in PowerShell:
-```powershell
-.\build.ps1
-```
-*Optional parameters:*
-* `.\build.ps1 -PortableOnly` (Builds only the standalone portable .exe)
-* `.\build.ps1 -SetupOnly` (Builds only the NSIS setup installer .exe)
-* `.\build.ps1 -SkipTests` (Skips the audio verification suite for faster builds)
-
-### Option C: npm Script
-```bash
-npm run build
-```
-*(Or individually: `npm run build:portable` / `npm run build:setup`)*
-
----
-
-All generated binaries are output directly to `dist/`:
-* `dist/SoundForge-Studio-Portable-1.0.0.exe` (Standalone Portable)
-* `dist/SoundForge-Studio-Setup-1.0.0.exe` (Full NSIS Installer with Start Menu & Desktop shortcuts)
+| Issue | Cause | Solution |
+| :--- | :--- | :--- |
+| **"Model file not found" or TTS failure** | Git LFS was not installed prior to cloning. Models are text pointers (~130 bytes). | Run `git lfs install` followed by `git lfs pull`. |
+| **"Running scripts is disabled on this system"** | Windows PowerShell execution policy restriction. | Run `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process`. |
+| **`EBUSY: resource busy or locked` during build** | Windows Defender or Antivirus locked the temporary `.7z` file during NSIS compression. | Wait 5 seconds and re-run `build.bat`, or add the `soundforge-app` folder to Defender exclusions. |
+| **`electron-builder not recognized`** | Dependencies were not installed. | Run `npm install` in the project root folder. |
 
 ---
 
