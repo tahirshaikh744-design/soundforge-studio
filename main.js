@@ -111,7 +111,8 @@ function buildMenu() {
                 'HQ Game Audio Asset Generator — Mobile & Studio Grade.\n\n' +
                 '• Developer: Mohd Tahir Shaikh\n' +
                 '• Brand: NEURON TS LABS\n' +
-                '• Contact: tahirshaikh744@gmail.com\n\n' +
+                '• Contact: tahirshaikh744@gmail.com\n' +
+                '• GitHub: https://github.com/tahirshaikh744-design\n\n' +
                 '• Offline Piper Neural TTS Engine with ITU-R BS.1770-4 loudness compliance.\n' +
                 '• 2,500 Physical Acoustic SFX models with 44.1 kHz / 48.0 kHz mobile engine export.\n' +
                 '• Click-free micro-fades, true-peak lookahead limiter, and TPDF dither.\n' +

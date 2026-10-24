@@ -5,10 +5,10 @@
   "description": "SoundForge Studio - Offline Neural Game Voice & 2,500 Physical SFX Game Audio Generator for Mobile & Studio",
   "author": "Mohd Tahir Shaikh <tahirshaikh744@gmail.com> (NEURON TS LABS)",
   "license": "MIT",
-  "homepage": "https://github.com/tahirshaikh744/soundforge-studio",
+  "homepage": "https://github.com/tahirshaikh744-design/soundforge-studio",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tahirshaikh744/soundforge-studio.git"
+    "url": "https://github.com/tahirshaikh744-design/soundforge-studio.git"
   },
   "keywords": [
     "game-audio",

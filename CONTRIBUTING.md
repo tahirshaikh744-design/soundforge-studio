@@ -8,7 +8,7 @@ This project is developed and maintained by **Mohd Tahir Shaikh** at **NEURON TS
 ## How to Contribute
 
 ### 1. Reporting Bugs
-- Check the [Issues tab](https://github.com/tahirshaikh744/soundforge-studio/issues) to ensure your issue hasn't already been reported.
+- Check the [Issues tab](https://github.com/tahirshaikh744-design/soundforge-studio/issues) to ensure your issue hasn't already been reported.
 - Include your OS version, steps to reproduce, and any console or error logs.
 
 ### 2. Suggesting Physical Acoustic Models

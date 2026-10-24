@@ -72,7 +72,7 @@ You can run SoundForge Studio immediately without installing Node.js:
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/tahirshaikh744/soundforge-studio.git
+git clone https://github.com/tahirshaikh744-design/soundforge-studio.git
 cd soundforge-studio
 
 # 2. Pull Git LFS model binaries
@@ -158,7 +158,7 @@ soundforge-studio/
 * **Developer:** **Mohd Tahir Shaikh**
 * **Brand / Studio:** **NEURON TS LABS**
 * **Email:** [tahirshaikh744@gmail.com](mailto:tahirshaikh744@gmail.com)
-* **GitHub:** [@tahirshaikh744](https://github.com/tahirshaikh744)
+* **GitHub:** [@tahirshaikh744-design](https://github.com/tahirshaikh744-design)
 
 ---
 
