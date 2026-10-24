@@ -27,7 +27,7 @@
   "scripts": {
     "start": "electron .",
     "test": "node test-audio-suite.js",
-    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\",
+    "clean": "node clean.js",
     "build": "electron-builder --win portable nsis -p never",
     "build:portable": "electron-builder --win portable -p never",
     "build:setup": "electron-builder --win nsis -p never",
