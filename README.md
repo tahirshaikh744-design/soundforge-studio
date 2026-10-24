@@ -179,8 +179,8 @@ npm run build:setup
 
 ### Step 5: Locate Your Output Executables
 All compiled binaries will be placed in the `dist/` directory:
-* 📁 `dist/SoundForge-Studio-Portable-1.0.0.exe` (~383 MB — Zero installation, runs immediately on any Windows PC).
-* 📁 `dist/SoundForge-Studio-Setup-1.0.0.exe` (~383 MB — Full NSIS installer with Desktop and Start Menu shortcuts).
+* 📁 `dist/SoundForge-Studio-Portable-1.0.1.exe` (~383 MB — Zero installation, runs immediately on any Windows PC).
+* 📁 `dist/SoundForge-Studio-Setup-1.0.1.exe` (~383 MB — Full NSIS installer with Desktop and Start Menu shortcuts).
 
 ### Step 6: Clean Up Build Artifacts (Optional)
 To delete intermediate build caches and free up ~1.7 GB of packaging space:
@@ -200,14 +200,20 @@ npm test
 
 This verifies:
 1. **Catalog Integrity:** Validates all 2,500 physical SFX items across all 25 categories.
-2. **ITU-R BS.1770-4 Compliance:** Verifies integrated LUFS normalization accuracy.
-3. **True Peak Oversampling:** Validates 4x polyphase inter-sample peak detection (-1.0 dBTP ceiling).
-4. **WAV Serialization & TPDF Dither:** Asserts 16-bit PCM bitstream encoding.
-5. **Physical SFX Determinism:** Verifies bit-for-bit identical output on re-render.
-6. **Dual Sample Rates:** Asserts bandlimited sinc resampling at 44.1 kHz and 48.0 kHz.
-7. **Click-Free Micro-Fades:** Validates zero boundary sample values (3ms attack / 6ms decay).
-8. **Game Voice DSP Transforms:** Tests Arena, Tactical Radio, Cyborg, and Demonic Boss audio graphs.
-9. **Category Coverage:** Synthesizes sounds across all 25 categories.
+2. **Full Structural Uniqueness:** Asserts 2,500 unique IDs, 25 categories, 100 items each.
+3. **Semantic Prompt Routing:** Validates freeform text classification and transparent Foley fallback.
+4. **ITU-R BS.1770-4 Compliance:** Verifies integrated LUFS normalization accuracy (-16.0 LUFS target).
+5. **True Peak Oversampling:** Validates 4x polyphase inter-sample peak detection (-1.0 dBTP ceiling).
+6. **WAV Serialization & Seeded Dither:** Asserts 16-bit PCM bitstream encoding with deterministic TPDF dither.
+7. **Real SHA-256 Asset Fingerprints:** Verifies crypto-calculated SHA-256 digests against reference test vectors.
+8. **End-to-End Determinism:** Asserts bit-for-bit identical WAV byte streams on repeated exports.
+9. **Bandlimited Windowed-Sinc FIR Resampling:** Verifies DC preservation, passband accuracy, and >60 dB stopband rejection.
+10. **Click-Free Micro-Fades:** Validates zero boundary sample values (3ms attack / 6ms decay).
+11. **Game Voice DSP Transforms:** Tests Arena, Tactical Radio, Cyborg, and Demonic Boss audio graphs.
+12. **Numerical Safety & Edge Cases:** Verifies graceful handling of pure silence, NaNs, and infinities.
+13. **Full Catalog Dispatch Coverage:** Synthesizes sounds across all 25 physical acoustic categories.
+14. **Neural Voice Model Validation:** Verifies ONNX weight binaries (>50MB) and detects unpulled Git LFS stubs.
+15. **Preload IPC Lifecycle:** Verifies memory-leak free event listener registration and deterministic unsubscription.
 
 ---
 
@@ -226,26 +232,33 @@ This verifies:
 
 ```text
 soundforge-studio/
+├── .github/workflows/     # GitHub Actions CI workflow (Windows automated test matrix)
+├── docs/                  # Technical audit, DSP architecture, and test reports
 ├── engine/
 │   ├── piper/             # Offline Piper neural TTS executable, ONNX Runtime & eSpeak
 │   └── voices/            # Pre-trained ONNX voice models (Joe, Ryan, Aria, Alan)
 ├── build/                 # Application icons and packaging assets
 ├── build.bat              # Windows 1-click batch build script (Portable + Setup)
 ├── build.ps1              # Windows PowerShell build script with custom flags
-├── index.html             # Studio UI, real-time oscilloscope, category carousel
-├── main.js                # Electron main process, IPC handlers, batch pipelines
-├── preload.js             # Secure Electron context bridge
-├── mastering.js           # ITU-R BS.1770-4 normalizer, lookahead limiter, Game Voice DSP
+├── clean.js               # Clean utility to free temporary electron-builder cache
+├── index.html             # Studio UI markup with hardened Content Security Policy
+├── styles.css             # Modular CSS stylesheet (no unsafe-inline needed)
+├── renderer.js            # Hardened renderer controller, virtual scroller, oscilloscope
+├── main.js                # Hardened Electron main process, IPC handlers, child process manager
+├── preload.js             # Secure Electron context bridge with unsubscribable listeners
+├── mastering.js           # ITU-R BS.1770-4 normalizer, windowed-sinc resampler, SHA-256
 ├── sfx-catalog.js         # 2,500 Physical SFX database (25 categories x 100 items)
+├── sfx-semantic.js        # Rule-based semantic prompt classifier for custom sound requests
 ├── sfx-synthesizer.js     # Procedural physical acoustic synthesis generators
 ├── sfx-core.js            # DSP math kernels (modal, granular, non-linear friction, FM)
 ├── sfx-domain.js          # Vehicle and firearm domain modelers
 ├── sfx-domain2.js         # Foley, ambient, blast, and creature domain modelers
 ├── sfx.js                 # Acoustic synthesis router and post-chain limiter
-├── test-audio-suite.js    # Automated quality and compliance test suite
-├── package.json           # Project manifest and electron-builder configuration
+├── test-audio-suite.js    # Comprehensive 15-suite automated regression test runner
+├── package.json           # Project manifest, locked dependencies, and electron-builder config
+├── package-lock.json      # Committed npm lockfile for 100% reproducible builds
 ├── LICENSE                # MIT License
-├── THIRD-PARTY-LICENSES.md# Detailed third-party licenses and model attributions
+├── THIRD-PARTY-LICENSES.md# Authoritative third-party licenses and model attributions
 ├── CONTRIBUTING.md        # Community contribution guidelines
 └── SECURITY.md            # Security vulnerability reporting policy
 ```

@@ -2,7 +2,7 @@
 
 /* ============================================================================
    SFX-SYNTHESIZER.JS — SEMANTIC PHYSICAL ACOUSTIC SFX ENGINE
-   Every one of the 1,500 sound effects has its own authentic physical model,
+   Every one of the 2,500 sound effects has its own authentic physical model,
    material resonance, kinetic excitation, envelope, and frequency design.
    Zero generic fallback clicks. 100% deterministic, rich, mobile-game ready.
    ============================================================================ */
@@ -15,14 +15,24 @@ const {
   vocalFormant, fmSynth, musicalChord, clamp, addAt
 } = C;
 
+const semantic = require('./sfx-semantic.js');
+
 /**
  * Main synthesis entry: builds a custom, high-fidelity Float32 buffer
  * specifically tailored to the item's category and semantic title.
  */
 function synthesizeAcousticSfx(item, params = {}) {
   const name = String(item.name || '').trim();
-  const cat = String(item.cat || '').trim();
-  const seed = hash32((item.id || '') + '|' + name + '|' + cat + '|v' + (item.variant || 0));
+  let cat = String(item.cat || '').trim();
+  let interpretation = null;
+
+  // If item is a custom prompt or unassigned category, classify its intent semantically
+  if (!cat || cat === 'Custom SFX' || cat === 'Custom' || cat === 'custom_s') {
+    interpretation = semantic.classifyPrompt(name);
+    cat = interpretation.category;
+  }
+
+  const seed = params.seed != null ? Number(params.seed) : hash32((item.id || '') + '|' + name + '|' + cat + '|v' + (item.variant || 0));
   const rnd = mulberry(seed);
   const lower = name.toLowerCase();
 
@@ -32,7 +42,7 @@ function synthesizeAcousticSfx(item, params = {}) {
   dur = clamp(dur, 0.04, 5.0);
 
   const out = makeBuf(dur);
-  const ctx = { name, lower, cat, dur, seed, rnd, out };
+  const ctx = { name, lower, cat, dur, seed, rnd, out, interpretation };
 
   // 2. Dispatch to dedicated category acoustic model generator
   try {
@@ -46,7 +56,10 @@ function synthesizeAcousticSfx(item, params = {}) {
     sr: SR,
     dur,
     model: cat,
-    label: '[' + cat + ' · ' + name + ']'
+    interpretation,
+    label: interpretation && !interpretation.isFallback
+      ? `[${cat} (${interpretation.matchedKeyword}) · ${name}]`
+      : `[${cat} · ${name}]`
   };
 }
 

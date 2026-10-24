@@ -4,7 +4,7 @@
    SFX.JS — Router + duration derivation + per-item post chain.
    Replaces the old index-math engine. Routes each item by NAME KEYWORD into a
    domain model, derives a realistic duration, seeds a deterministic PRNG so
-   every one of the 1,500 items is distinct, then normalizes/limiter.
+   every one of the 2,500 items is distinct, then normalizes/limiter.
    ============================================================================ */
 
 const C = require('./sfx-core.js');
@@ -164,6 +164,7 @@ function synthesizeSfx(item, params = {}) {
     sr: targetSr,
     dur: out.length / targetSr,
     model: r.model || item.cat,
+    interpretation: r.interpretation,
     label: r.label || '[' + item.cat + ' · ' + (item.name || '') + ']'
   };
 }

@@ -9,6 +9,7 @@ param (
 )
 
 $ErrorActionPreference = "Stop"
+if ($PSScriptRoot) { Set-Location $PSScriptRoot }
 
 Write-Host "======================================================================" -ForegroundColor Cyan
 Write-Host "          SOUNDFORGE STUDIO - AUTOMATED BUILD PIPELINE" -ForegroundColor Green

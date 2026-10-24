@@ -1,0 +1,42 @@
+name: SoundForge Studio CI & Quality Verification
+
+on:
+  push:
+    branches: [ master, main ]
+  pull_request:
+    branches: [ master, main ]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    name: Audio DSP, Security & Regression Suite
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        node-version: [ 18.x, 20.x ]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Pull Git LFS models
+        run: git lfs pull
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies using reproducible lockfile
+        run: npm ci
+
+      - name: Run audio quality and regression test suite
+        run: npm test
+
+      - name: Syntax and build check main process
+        run: node -c main.js preload.js renderer.js sfx-synthesizer.js mastering.js sfx-semantic.js
