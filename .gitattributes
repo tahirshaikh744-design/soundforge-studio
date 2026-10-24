@@ -1,0 +1,11 @@
+# Configure Git LFS for Large Binary Model Files
+engine/voices/*.onnx filter=lfs diff=lfs merge=lfs -text
+engine/piper/*.ort filter=lfs diff=lfs merge=lfs -text
+
+# Binary executable and library files
+engine/piper/*.exe binary
+engine/piper/*.dll binary
+*.ico binary
+*.png binary
+*.jpg binary
+*.wav binary

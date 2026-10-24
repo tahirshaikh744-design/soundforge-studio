@@ -1,0 +1,101 @@
+{
+  "name": "soundforge-studio",
+  "productName": "SoundForge Studio",
+  "version": "1.0.0",
+  "description": "SoundForge Studio - Offline Neural Game Voice & 2,500 Physical SFX Game Audio Generator for Mobile & Studio",
+  "author": "Mohd Tahir Shaikh <tahirshaikh744@gmail.com> (NEURON TS LABS)",
+  "license": "MIT",
+  "homepage": "https://github.com/tahirshaikh744/soundforge-studio",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tahirshaikh744/soundforge-studio.git"
+  },
+  "keywords": [
+    "game-audio",
+    "sfx-generator",
+    "neural-tts",
+    "piper-tts",
+    "sound-effects",
+    "game-dev",
+    "unity",
+    "unreal-engine",
+    "itu-r-bs1770",
+    "audio-dsp",
+    "electron"
+  ],
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node test-audio-suite.js",
+    "dist": "electron-builder --win portable nsis -p never",
+    "dist:portable": "electron-builder --win portable -p never",
+    "dist:setup": "electron-builder --win nsis -p never"
+  },
+  "devDependencies": {
+    "electron": "^38.0.0",
+    "electron-builder": "^26.0.12"
+  },
+  "build": {
+    "appId": "com.neurontslabs.soundforge",
+    "productName": "SoundForge Studio",
+    "copyright": "Copyright © 2026 Mohd Tahir Shaikh / NEURON TS LABS",
+    "electronDist": "node_modules/electron/dist",
+    "directories": {
+      "output": "dist",
+      "buildResources": "build"
+    },
+    "files": [
+      "index.html",
+      "main.js",
+      "preload.js",
+      "mastering.js",
+      "sfx-catalog.js",
+      "sfx.js",
+      "sfx-synthesizer.js",
+      "sfx-core.js",
+      "sfx-domain.js",
+      "sfx-domain2.js"
+    ],
+    "extraResources": [
+      {
+        "from": "engine",
+        "to": "engine",
+        "filter": ["**/*"]
+      }
+    ],
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        },
+        {
+          "target": "portable",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": "always",
+      "createStartMenuShortcut": true,
+      "shortcutName": "SoundForge Studio",
+      "uninstallDisplayName": "SoundForge Studio",
+      "artifactName": "SoundForge-Studio-Setup-${version}.exe"
+    },
+    "portable": {
+      "artifactName": "SoundForge-Studio-Portable-${version}.exe"
+    }
+  },
+  "allowScripts": {
+    "electron@38.8.6": true,
+    "electron-winstaller@5.4.0": true
+  }
+}

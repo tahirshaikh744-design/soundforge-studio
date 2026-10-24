@@ -1,0 +1,35 @@
+# Dependencies
+node_modules/
+package-lock.json
+
+# Build and Packaging Outputs
+dist/
+out/
+release/
+*.exe
+*.blockmap
+*.7z
+*.zip
+*.tar.gz
+
+# Logs and Scratch
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+scratch/
+
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor Directories
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Test & Temp Output
+test-out/
+*.tmp
