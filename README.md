@@ -58,9 +58,9 @@ Integrated real-time DSP stages transform standard neural speech into iconic gam
 ## 🚀 Getting Started
 
 ### Prebuilt Executables
-You can run SoundForge Studio immediately without installing Node.js:
-* **Standalone Portable:** [`SoundForge-Studio-Portable-1.0.0.exe`](SoundForge-Studio-Portable-1.0.0.exe) (Zero installation, runs anywhere).
-* **Windows Installer:** [`SoundForge-Studio-Setup-1.0.0.exe`](SoundForge-Studio-Setup-1.0.0.exe) (Full NSIS setup with Start Menu and Desktop shortcuts).
+Download the latest prebuilt binaries from [GitHub Releases](https://github.com/tahirshaikh744-design/soundforge-studio/releases):
+* **Standalone Portable:** `SoundForge-Studio-Portable-1.0.0.exe` (Zero installation, runs anywhere).
+* **Windows Installer:** `SoundForge-Studio-Setup-1.0.0.exe` (Full NSIS setup with Start Menu and Desktop shortcuts).
 
 ---
 
@@ -111,17 +111,37 @@ This verifies:
 
 ---
 
-## 📦 Building Production Binaries
+## 📦 Building Production Binaries (Both Setup & Portable)
 
-To build both Portable and Setup installer executables for Windows:
+SoundForge Studio includes automated build scripts to build **both** the Portable and Setup installer executables with a single command:
 
-```bash
-npm run dist
+### Option A: 1-Click Windows Batch Script
+Double-click `build.bat` or run in Command Prompt:
+```cmd
+build.bat
 ```
 
-Outputs will be generated in `dist/`:
-* `dist/SoundForge-Studio-Portable-1.0.0.exe`
-* `dist/SoundForge-Studio-Setup-1.0.0.exe`
+### Option B: PowerShell Build Script
+Run in PowerShell:
+```powershell
+.\build.ps1
+```
+*Optional parameters:*
+* `.\build.ps1 -PortableOnly` (Builds only the standalone portable .exe)
+* `.\build.ps1 -SetupOnly` (Builds only the NSIS setup installer .exe)
+* `.\build.ps1 -SkipTests` (Skips the audio verification suite for faster builds)
+
+### Option C: npm Script
+```bash
+npm run build
+```
+*(Or individually: `npm run build:portable` / `npm run build:setup`)*
+
+---
+
+All generated binaries are output directly to `dist/`:
+* `dist/SoundForge-Studio-Portable-1.0.0.exe` (Standalone Portable)
+* `dist/SoundForge-Studio-Setup-1.0.0.exe` (Full NSIS Installer with Start Menu & Desktop shortcuts)
 
 ---
 
@@ -133,6 +153,8 @@ soundforge-studio/
 │   ├── piper/             # Offline Piper neural TTS executable, ONNX Runtime & eSpeak
 │   └── voices/            # Pre-trained ONNX voice models (Joe, Ryan, Aria, Alan)
 ├── build/                 # Application icons and packaging assets
+├── build.bat              # Windows 1-click batch build script (Portable + Setup)
+├── build.ps1              # Windows PowerShell build script with custom flags
 ├── index.html             # Studio UI, real-time oscilloscope, category carousel
 ├── main.js                # Electron main process, IPC handlers, batch pipelines
 ├── preload.js             # Secure Electron context bridge

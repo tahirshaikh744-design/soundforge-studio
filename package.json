@@ -27,6 +27,9 @@
   "scripts": {
     "start": "electron .",
     "test": "node test-audio-suite.js",
+    "build": "electron-builder --win portable nsis -p never",
+    "build:portable": "electron-builder --win portable -p never",
+    "build:setup": "electron-builder --win nsis -p never",
     "dist": "electron-builder --win portable nsis -p never",
     "dist:portable": "electron-builder --win portable -p never",
     "dist:setup": "electron-builder --win nsis -p never"
